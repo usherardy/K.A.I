@@ -1,4 +1,4 @@
-# KAI
+# KAI: Knowledge & Analytics Intelligence
 
 A voice assistant on your Apple Watch that knows how your projects are doing. Raise your wrist, ask "How's ShawGames doing today?", and Kai pulls live numbers from Google Analytics 4, PostHog and Sentry, then answers out loud in a sentence or two.
 
