@@ -1,7 +1,9 @@
 import SwiftUI
 
+/// Home: the orb button that opens the assistant, quick questions, and recent answers.
 struct ContentView: View {
-    @State private var model = ConversationModel()
+    @State private var assistant = AssistantModel()
+    @State private var showingAssistant = false
     @AppStorage("speakReplies") private var speakReplies = true
 
     private static let suggestions = [
@@ -12,56 +14,53 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollViewReader { proxy in
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 8) {
-                        if model.turns.isEmpty {
-                            Text("Ask about traffic, errors or what to work on next.")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
-
-                        ForEach(model.turns) { turn in
-                            TurnView(turn: turn).id(turn.id)
-                        }
-
-                        if model.isThinking {
-                            HStack(spacing: 6) {
-                                ProgressView().frame(width: 20, height: 20)
-                                Text("Checking…").font(.footnote).foregroundStyle(.secondary)
-                            }
-                            .id("thinking")
-                        }
-
-                        askButton.id("ask")
-
-                        if model.turns.isEmpty {
-                            ForEach(Self.suggestions, id: \.self) { suggestion in
-                                Button(suggestion) { send(suggestion) }
-                                    .font(.footnote)
-                                    .disabled(model.isThinking)
-                            }
+            ScrollView {
+                VStack(spacing: 10) {
+                    Button(action: openAndListen) {
+                        VStack(spacing: 0) {
+                            OrbView(phase: .idle)
+                                .frame(width: 96, height: 96)
+                            Text("Ask Kai")
+                                .font(.headline)
+                                .foregroundStyle(Color.kaiGold)
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .onChange(of: model.turns) {
-                    withAnimation { proxy.scrollTo("ask", anchor: .bottom) }
-                }
-                .onChange(of: model.isThinking) {
-                    if model.isThinking { withAnimation { proxy.scrollTo("thinking", anchor: .bottom) } }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Ask Kai")
+                    .modifier(DoubleTapShortcut())
+
+                    if assistant.turns.isEmpty {
+                        ForEach(Self.suggestions, id: \.self) { suggestion in
+                            Button(suggestion) { open(asking: suggestion) }
+                                .font(.footnote)
+                        }
+                    } else {
+                        ForEach(assistant.exchanges, id: \.answer.id) { exchange in
+                            VStack(alignment: .leading, spacing: 3) {
+                                if let question = exchange.question {
+                                    Text(question.text)
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Text(exchange.answer.text)
+                                    .font(.footnote)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, 2)
+                        }
+                    }
                 }
             }
             .navigationTitle("Kai")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        model.startOver()
+                        assistant.startOver()
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
                     .accessibilityLabel("New conversation")
-                    .disabled(model.turns.isEmpty)
+                    .disabled(assistant.turns.isEmpty)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -74,57 +73,32 @@ struct ContentView: View {
                 }
             }
         }
-    }
-
-    /// Opens the system input sheet (dictation, Scribble or keyboard) and sends what you say.
-    private var askButton: some View {
-        TextFieldLink(prompt: Text("Ask Kai")) {
-            Label(model.turns.isEmpty ? "Ask Kai" : "Follow up", systemImage: "mic.fill")
-                .frame(maxWidth: .infinity)
-        } onSubmit: { text in
-            send(text)
+        .sheet(isPresented: $showingAssistant) {
+            AssistantView(model: assistant, speakReplies: speakReplies)
         }
-        .tint(.accentColor)
-        .disabled(model.isThinking)
-        .modifier(DoubleTapToAsk())
-    }
-
-    private func send(_ text: String) {
-        Task { await model.ask(text, speakReply: speakReplies) }
-    }
-}
-
-private struct TurnView: View {
-    let turn: Turn
-
-    var body: some View {
-        switch turn.role {
-        case .user:
-            Text(turn.text)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .multilineTextAlignment(.trailing)
-        case .kai:
-            Text(turn.text)
-                .font(.body)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        case .error:
-            Label(turn.text, systemImage: "exclamationmark.triangle.fill")
-                .font(.footnote)
-                .foregroundStyle(.orange)
+        #if DEBUG
+        // Testing aids for the simulator:
+        //   -KAIAskOnLaunch "question"   open the assistant and ask a typed question
+        //   -KAIListenOnLaunch YES       open the assistant and start listening
+        .task {
+            let defaults = UserDefaults.standard
+            if let question = defaults.string(forKey: "KAIAskOnLaunch") {
+                open(asking: question)
+            } else if defaults.bool(forKey: "KAIListenOnLaunch") {
+                openAndListen()
+            }
         }
+        #endif
     }
-}
 
-/// On Apple Watch Series 9 / Ultra 2 and later, double-tap your fingers to start asking.
-private struct DoubleTapToAsk: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(watchOS 11.0, *) {
-            content.handGestureShortcut(.primaryAction)
-        } else {
-            content
-        }
+    private func openAndListen() {
+        assistant.listen(speakReplies: speakReplies)
+        showingAssistant = true
+    }
+
+    private func open(asking question: String) {
+        assistant.ask(question, speakReplies: speakReplies)
+        showingAssistant = true
     }
 }
 

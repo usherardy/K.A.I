@@ -16,15 +16,16 @@ Kai:  Fix the database timeout first. Begin looks healthy, with no critical aler
 
 Early MVP. Checked so far:
 
-- **Backend:** type check is clean and all 33 tests pass (integrations against mocked APIs, the agent loop, the HTTP layer). It runs locally and bundles for Cloudflare Workers.
-- **OpenAI:** connected and answering. The first measured reply took 4.2 s for a single model call; see [docs/performance.md](docs/performance.md).
-- **Not yet done:** running against real PostHog, Sentry and GA4 data, and running the watch app in the simulator or on a watch. It compiles for watchOS 10 and 26.
+- **Backend:** type check is clean and all 39 tests pass (integrations against mocked APIs, the agent loop, the HTTP layer and the voice endpoint). It runs locally and bundles for Cloudflare Workers.
+- **OpenAI:** connected and answering. A spoken question sent as real audio was transcribed and answered in 3.7 s; see [docs/performance.md](docs/performance.md).
+- **Watch app:** the full voice flow works in the watchOS 26.2 simulator. Tap the orb and it listens, thinks, then shows and speaks the answer.
+- **Not yet done:** running against real PostHog, Sentry and GA4 data, and running on a physical watch.
 
 ## How it works
 
 ```
-Apple Watch app ──(dictation)──┐
-Siri: "Ask Kai" / "Kai briefing"┤        POST /v1/ask
+Apple Watch app ──(your voice)──┐        POST /v1/voice   recording → OpenAI speech-to-text → question
+Siri: "Ask Kai" / "Kai briefing"┤        POST /v1/ask     typed question
                                 └──────► backend (Hono on Cloudflare Workers or Node)
                                            │  OpenAI tool calling, up to 5 rounds,
                                            │  tools run in parallel
@@ -94,9 +95,28 @@ KAI_PROJECTS='[{"id":"shawgames","name":"ShawGames","aliases":["shaw games"],"ga
 2. `cp watch/Config/Secrets.example.xcconfig watch/Config/Secrets.xcconfig` (git-ignored) and fill in your team ID, a bundle id, `KAI_BASE_URL` and the same `KAI_API_KEY` as the backend. In xcconfig files `//` starts a comment, so write URLs as `https:/$()/host`.
 3. Open `watch/KAI.xcodeproj` and run the **KAI** scheme on a watch simulator (it can reach `http://localhost:8787`) or on your watch. A real watch needs the deployed URL, or your Mac's LAN IP with the backend started as `HOST=0.0.0.0 npm run dev`.
 
-In the app, tap **Ask Kai** (or double-tap your fingers on Series 9 / Ultra 2 and later), then speak. Replies are read aloud; the speaker button in the corner turns that off. Follow-up questions keep their context until you tap the reset button.
+**Using it:** tap the gold orb, or double-tap your fingers on Series 9 / Ultra 2 and later.
+
+1. **Listening.** Kai starts listening right away, and a ring of bars around the orb reacts to your voice. Recording stops by itself when you pause, or tap the orb to send early.
+2. **Thinking.** Bright arcs race around the ring while the backend transcribes your question and looks up the answer.
+3. **Answering.** The orb shrinks, the screen shows what Kai heard and its reply, and the orb pulses with each word as the reply is read aloud. Tap the orb to stop it talking.
+
+Tap the orb again to ask a follow-up; Kai keeps the context until you tap the reset button on the home screen. **Type instead** is there for when you can't talk out loud, and the speaker button turns spoken replies off.
+
+watchOS has no speech-recognition API for apps, so the watch records your question and the backend turns it into text with OpenAI (`OPENAI_TRANSCRIBE_MODEL`, default `gpt-4o-mini-transcribe`).
 
 **Hands-free with Siri:** "Hey Siri, ask Kai" (Siri then asks for your question) or "Hey Siri, Kai briefing" (a status update across all projects). Third-party apps can't register an always-listening "Hey Kai" wake word, so Siri is the hands-free way in.
+
+**Testing without tapping:** Debug builds accept launch arguments, none of which are compiled into Release builds:
+
+| Argument | Effect |
+| --- | --- |
+| `-KAIAskOnLaunch "How's ShawGames doing today?"` | Opens the assistant and asks a typed question. |
+| `-KAIListenOnLaunch YES` | Opens the assistant and starts listening. |
+| `-KAITestAudioFile /path/question.m4a` | When listening, pretends to hear speech, then sends this file instead of using the microphone. The path must be inside the app's container (`xcrun simctl get_app_container booted com.example.kai data`). |
+| `-speakReplies NO` | Turns spoken replies off. |
+
+Example: `xcrun simctl launch booted com.example.kai -KAIListenOnLaunch YES -KAITestAudioFile "$C/tmp/question.m4a"`. To make a test recording, run `say -o q.aiff "How's ShawGames doing today?" && afconvert -f m4af -d aac q.aiff q.m4a`.
 
 `watch/KAI.xcodeproj` is generated from `watch/project.yml`. If you add files or change settings there, run `brew install xcodegen && cd watch && xcodegen`.
 
@@ -139,13 +159,16 @@ Once deployed, the backend's keys are stored as Cloudflare secrets (`wrangler se
 ## Things to know
 
 - **Model.** The default is `gpt-5-mini` with `OPENAI_REASONING_EFFORT=low`, to keep voice answers quick. Change it with `OPENAI_MODEL`, and remove `OPENAI_REASONING_EFFORT` if you pick a model that doesn't accept it.
-- **Privacy.** Metrics and Sentry error details are sent to OpenAI to write the answer. `query_posthog` can read anything the PostHog key can, so keep that key scoped to `query:read`. The backend drops query strings from request URLs and only passes a short list of safe tags from Sentry events.
+- **Privacy.** Spoken questions are recorded on the watch and sent to OpenAI for transcription. The backend doesn't keep the audio, only the transcribed text, which goes into conversation history like a typed question. Metrics and Sentry error details are sent to OpenAI to write the answer. `query_posthog` can read anything the PostHog key can, so keep that key scoped to `query:read`. The backend drops query strings from request URLs and only passes a short list of safe tags from Sentry events.
 - **Watch credentials.** The API key is built into the app bundle, which is fine for a personal app on your own watch. If the key leaks, rotate `KAI_API_KEY`.
 - **Siri time limits.** Siri gives up on slow intents. Each answer takes one or two model calls plus the API calls, so a broad briefing across many projects may take longer than Siri allows. If that happens, open the app instead, which waits up to 60 seconds.
+- **Voice.** Replies use the watch's default system voice. An earlier version picked the "best" installed voice by listing them all, but that call froze the app in testing, so it was removed.
+- **Simulator speech.** If the app freezes in the simulator just as Kai starts talking, restart the simulator (Device → Restart). In testing this happened after the Mac's disk filled up and broke the simulator's speech service; with spoken replies off (`-speakReplies NO`) it never froze.
 
 ## Next steps
 
 - Faster answers, if testing shows they're slow (plan in [docs/performance.md](docs/performance.md)).
+- A more JARVIS-like voice: OpenAI text-to-speech played on the watch instead of the built-in voice. This would add some latency.
 - Cloudflare integration (Workers errors, analytics, deployments).
 - A watch complication or Smart Stack widget showing visitors and open errors.
 - Proactive alerts: a scheduled job that checks for error spikes or traffic drops and sends a push notification to the watch.

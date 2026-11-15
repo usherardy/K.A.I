@@ -4,20 +4,23 @@
 
 ## Where the time goes
 
-Each answer currently makes two OpenAI calls, with the data fetches in between:
+Each answer currently makes two OpenAI calls, with the data fetches in between. Spoken questions add a speech-to-text step first:
 
 ```
-watch → backend → OpenAI (pick tools) → GA4 / PostHog / Sentry in parallel → OpenAI (write reply) → watch speaks
+watch records (stops after 1.2 s of silence) → backend → OpenAI speech-to-text
+  → OpenAI (pick tools) → GA4 / PostHog / Sentry in parallel → OpenAI (write reply) → watch speaks
 ```
 
 | Step | Estimate (not yet measured) |
 | --- | --- |
+| End-of-speech pause before the watch sends | 1.2 s (fixed: `endOfSpeechSilence` in `VoiceRecorder.swift`) |
 | Watch → backend | 0.2–1 s (slower when the watch goes through the iPhone over Bluetooth) |
+| Speech-to-text (spoken questions only) | 0.5–1.5 s |
 | OpenAI call 1: choose tools | 1–3 s |
 | Data APIs, in parallel (the slowest one decides) | 1–3 s |
 | OpenAI call 2: write the reply | 1–3 s |
 | Text-to-speech starts | almost instant (on the watch) |
-| **Total** | **about 3–8 s** |
+| **Total** | **about 3–8 s typed; add about 2–3 s for spoken questions** |
 
 ## Step 1: measure
 
@@ -33,6 +36,7 @@ Record the results here:
 | Date | Question | Model / effort | Slowest tool (ms) | Total (s) | Notes |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-15 | "Which projects do you know about?" (no data sources connected, no tools) | gpt-5-mini / low | none | 4.2 | One OpenAI call alone took 4.2 s, a single sample. A real answer makes two calls, so expect about 8 s or more. Fix 1 is likely worth trying. |
+| 2026-11-15 | Spoken "How's ShawGames doing today?" as real audio to `/v1/voice` (no data sources connected) | gpt-5-mini / low, plus gpt-4o-mini-transcribe | get_portfolio_overview (no sources) | 3.7 | Whole request measured with curl from the Mac: transcription plus both model calls. On the watch, add the 1.2 s end-of-speech pause and network time. |
 | | How's ShawGames doing today? | gpt-5-mini / low | | | |
 | | What are those errors? (follow-up) | gpt-5-mini / low | | | |
 | | What should I focus on? | gpt-5-mini / low | | | |
@@ -70,6 +74,8 @@ Stream the second OpenAI call (`stream: true`) and send the reply to the watch s
 The app already shows "Checking…". Possible improvements: a light tap on the wrist the moment the question is sent, and mentioning the project ("Checking ShawGames…"). This is small and only touches `ConversationModel.swift` and `ContentView.swift`.
 
 ### Smaller wins
+
+- Shorten the end-of-speech pause (`endOfSpeechSilence`, 1.2 s) to about 0.8 s. Every spoken question gets faster, but people who pause mid-sentence get cut off more often.
 
 - GA4's "today" summary makes two calls one after the other (today by hour, then yesterday up to the same hour). The second call could be skipped by assuming the property's time zone matches the user's.
 - Cache each tool result for about 60 seconds, so follow-ups and repeat questions don't refetch.

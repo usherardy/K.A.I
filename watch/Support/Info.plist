@@ -24,6 +24,8 @@
 	<true/>
 	<key>WKWatchOnly</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kai listens to your question when you tap the orb.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<!-- Lets Debug builds talk to http://localhost / LAN IPs; production should be https. -->

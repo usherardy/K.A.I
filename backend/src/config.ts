@@ -38,7 +38,7 @@ export interface Config {
   apiKey: string;
   /** Default time zone for "today" in the system prompt when the client doesn't send one. */
   timeZone: string;
-  openai: { apiKey: string; model: string; baseUrl: string; reasoningEffort?: string };
+  openai: { apiKey: string; model: string; baseUrl: string; reasoningEffort?: string; transcribeModel: string };
   projects: ProjectConfig[];
   ga4?: { serviceAccount: ServiceAccount };
   posthog?: { apiKey: string; host: string };
@@ -70,6 +70,7 @@ export function loadConfig(env: Bindings): Config {
       model: optional(env, "OPENAI_MODEL") ?? "gpt-5-mini",
       baseUrl: stripSlash(optional(env, "OPENAI_BASE_URL") ?? "https://api.openai.com/v1"),
       reasoningEffort: optional(env, "OPENAI_REASONING_EFFORT"),
+      transcribeModel: optional(env, "OPENAI_TRANSCRIBE_MODEL") ?? "gpt-4o-mini-transcribe",
     },
     projects: parseProjects(required(env, "KAI_PROJECTS"), optional(env, "SENTRY_ORG"), Boolean(optional(env, "SENTRY_AUTH_TOKEN"))),
   };

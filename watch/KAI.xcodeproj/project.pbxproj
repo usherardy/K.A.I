@@ -8,23 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		22E45D2B1A0BDC9BF4E0A369 /* KaiIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */; };
-		28B682D893255A438A97C32C /* ConversationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */; };
 		3361DF9917BACDC281B3FC5F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BADE27FDC576CCDEEEC4EA /* ContentView.swift */; };
+		36EDA461E9ED376EDCE2A5EF /* AssistantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1AC72CAA78DE9BF5D6186 /* AssistantModel.swift */; };
+		6CAF33874D42D52303217A9F /* VoiceRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F66CA30A9E93047949AFD1A /* VoiceRecorder.swift */; };
 		B88B5262EF41D74A6A756330 /* KaiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398FF48B1FA83C6D78171CB4 /* KaiClient.swift */; };
 		C0B46883BB12E555E0B68395 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BC5618B08EFF71F56D920D /* Speaker.swift */; };
 		EA3F92FAF2F7C3FFFB54FF05 /* KAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */; };
+		F430022392C816B2F146B1B2 /* AssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D53F7CF08AE403A99700B /* AssistantView.swift */; };
 		F9A3389306A53C96F932A6EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00174913B93BAB53CA88ECF0 /* Assets.xcassets */; };
+		FFB5BF741A9AAFF6E8403718 /* OrbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C84300F89DBE54D3398BAEB /* OrbView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		00174913B93BAB53CA88ECF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		26BADE27FDC576CCDEEEC4EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		398FF48B1FA83C6D78171CB4 /* KaiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaiClient.swift; sourceTree = "<group>"; };
-		420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationModel.swift; sourceTree = "<group>"; };
 		50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KAIApp.swift; sourceTree = "<group>"; };
 		8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaiIntents.swift; sourceTree = "<group>"; };
+		9C84300F89DBE54D3398BAEB /* OrbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbView.swift; sourceTree = "<group>"; };
 		9C8A07BB1D7DF93A8A318A81 /* KAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F66CA30A9E93047949AFD1A /* VoiceRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorder.swift; sourceTree = "<group>"; };
+		CCE1AC72CAA78DE9BF5D6186 /* AssistantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantModel.swift; sourceTree = "<group>"; };
 		CFA87FBDEB53B7C92B289EBA /* KAI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KAI.xcconfig; sourceTree = "<group>"; };
+		DB2D53F7CF08AE403A99700B /* AssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantView.swift; sourceTree = "<group>"; };
 		F6BC5618B08EFF71F56D920D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,12 +56,15 @@
 			isa = PBXGroup;
 			children = (
 				00174913B93BAB53CA88ECF0 /* Assets.xcassets */,
+				CCE1AC72CAA78DE9BF5D6186 /* AssistantModel.swift */,
+				DB2D53F7CF08AE403A99700B /* AssistantView.swift */,
 				26BADE27FDC576CCDEEEC4EA /* ContentView.swift */,
-				420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */,
 				50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */,
 				398FF48B1FA83C6D78171CB4 /* KaiClient.swift */,
 				8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */,
+				9C84300F89DBE54D3398BAEB /* OrbView.swift */,
 				F6BC5618B08EFF71F56D920D /* Speaker.swift */,
+				9F66CA30A9E93047949AFD1A /* VoiceRecorder.swift */,
 			);
 			path = KAI;
 			sourceTree = "<group>";
@@ -139,12 +148,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36EDA461E9ED376EDCE2A5EF /* AssistantModel.swift in Sources */,
+				F430022392C816B2F146B1B2 /* AssistantView.swift in Sources */,
 				3361DF9917BACDC281B3FC5F /* ContentView.swift in Sources */,
-				28B682D893255A438A97C32C /* ConversationModel.swift in Sources */,
 				EA3F92FAF2F7C3FFFB54FF05 /* KAIApp.swift in Sources */,
 				B88B5262EF41D74A6A756330 /* KaiClient.swift in Sources */,
 				22E45D2B1A0BDC9BF4E0A369 /* KaiIntents.swift in Sources */,
+				FFB5BF741A9AAFF6E8403718 /* OrbView.swift in Sources */,
 				C0B46883BB12E555E0B68395 /* Speaker.swift in Sources */,
+				6CAF33874D42D52303217A9F /* VoiceRecorder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

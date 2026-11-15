@@ -1,6 +1,6 @@
 import Foundation
 
-/// Talks to the KAI backend (`POST /v1/ask`). Shared by the app UI and the Siri intents.
+/// Talks to the KAI backend. Shared by the app UI and the Siri intents.
 struct KaiClient: Sendable {
     let baseURL: URL
     let apiKey: String
@@ -21,20 +21,43 @@ struct KaiClient: Sendable {
         return KaiClient(baseURL: url, apiKey: key)
     }
 
+    /// A typed question (`POST /v1/ask`).
     func ask(_ message: String, conversationId: String? = nil) async throws -> AskResponse {
-        var request = URLRequest(url: baseURL.appending(path: "v1/ask"))
-        request.httpMethod = "POST"
-        request.timeoutInterval = 60
+        var request = makeRequest(url: baseURL.appending(path: "v1/ask"))
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.httpBody = try JSONEncoder().encode(
             AskRequest(message: message, conversationId: conversationId, timeZone: TimeZone.current.identifier)
         )
+        return try await send { try await URLSession.shared.data(for: request) }
+    }
 
+    /// A spoken question (`POST /v1/voice`): uploads the recording; the backend transcribes it and answers.
+    func ask(audioFile: URL, conversationId: String? = nil) async throws -> AskResponse {
+        var components = URLComponents(url: baseURL.appending(path: "v1/voice"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "timeZone", value: TimeZone.current.identifier)]
+        if let conversationId {
+            components.queryItems?.append(URLQueryItem(name: "conversationId", value: conversationId))
+        }
+        var request = makeRequest(url: components.url!)
+        request.setValue("audio/mp4", forHTTPHeaderField: "Content-Type")
+        return try await send { try await URLSession.shared.upload(for: request, fromFile: audioFile) }
+    }
+
+    private func makeRequest(url: URL) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 60
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+
+    private func send(_ perform: () async throws -> (Data, URLResponse)) async throws -> AskResponse {
         let data: Data
         let response: URLResponse
         do {
-            (data, response) = try await URLSession.shared.data(for: request)
+            (data, response) = try await perform()
+        } catch let error as URLError where error.code == .cancelled {
+            throw CancellationError()
         } catch let error as URLError where error.code == .timedOut {
             throw KaiError.network("Kai took too long to answer.")
         } catch let error as URLError {
@@ -57,8 +80,11 @@ struct AskRequest: Encodable {
 }
 
 struct AskResponse: Decodable, Sendable {
-    let conversationId: String
+    /// Missing only when a spoken question was empty and no conversation was started.
+    let conversationId: String?
     let reply: String
+    /// What the backend heard, for spoken questions.
+    let transcript: String?
 }
 
 private struct ErrorResponse: Decodable {

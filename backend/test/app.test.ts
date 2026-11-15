@@ -3,6 +3,7 @@ import { createApp } from "../src/app";
 import { UpstreamError } from "../src/errors";
 import type { LLM } from "../src/llm";
 import { MemoryStore } from "../src/store";
+import type { Transcriber } from "../src/transcribe";
 import { API_KEY, testEnv } from "./helpers";
 
 const replyLLM = (content: string): LLM => ({ complete: async () => ({ role: "assistant", content }) });
@@ -75,5 +76,56 @@ describe("HTTP API", () => {
     });
     const res = await post(failing, { message: "hi" });
     expect(res.status).toBe(502);
+  });
+
+  describe("POST /v1/voice", () => {
+    const heard: { type: string; name: string; size: number }[] = [];
+    const transcriber = (text: string): Transcriber => ({
+      transcribe: async (audio, name) => {
+        heard.push({ type: audio.type, name, size: audio.size });
+        return text;
+      },
+    });
+    const voiceApp = (text: string) =>
+      createApp({ llm: () => replyLLM("ShawGames is doing well."), store: () => store, transcriber: () => transcriber(text) });
+
+    const upload = (app: ReturnType<typeof createApp>, opts: { type?: string; body?: Uint8Array; query?: string } = {}) =>
+      app.request(
+        `/v1/voice${opts.query ?? "?timeZone=America/New_York"}`,
+        {
+          method: "POST",
+          headers: { authorization: `Bearer ${API_KEY}`, "content-type": opts.type ?? "audio/mp4" },
+          body: opts.body ?? new Uint8Array([0, 1, 2, 3]),
+        },
+        testEnv(),
+      );
+
+    it("transcribes the recording and answers it", async () => {
+      const res = await upload(voiceApp("How's ShawGames doing today?"));
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { transcript: string; reply: string; conversationId: string };
+      expect(body.transcript).toBe("How's ShawGames doing today?");
+      expect(body.reply).toBe("ShawGames is doing well.");
+      expect(heard.at(-1)).toEqual({ type: "audio/mp4", name: "question.m4a", size: 4 });
+      expect((await store.load(body.conversationId))?.[0]).toEqual({ role: "user", content: "How's ShawGames doing today?" });
+    });
+
+    it("says so when nothing was heard, without calling the model", async () => {
+      const res = await upload(voiceApp(""));
+      expect(await res.json()).toMatchObject({ transcript: "", reply: "Sorry, I didn't catch that.", conversationId: null });
+    });
+
+    it("rejects non-audio, empty and oversized uploads, and bad conversation ids", async () => {
+      const app = voiceApp("hi");
+      expect((await upload(app, { type: "application/json" })).status).toBe(415);
+      expect((await upload(app, { body: new Uint8Array() })).status).toBe(400);
+      expect((await upload(app, { body: new Uint8Array(4 * 1024 * 1024 + 1) })).status).toBe(413);
+      expect((await upload(app, { query: "?conversationId=nope" })).status).toBe(400);
+    });
+
+    it("requires the API key", async () => {
+      const res = await voiceApp("hi").request("/v1/voice", { method: "POST", headers: { "content-type": "audio/mp4" }, body: "x" }, testEnv());
+      expect(res.status).toBe(401);
+    });
   });
 });

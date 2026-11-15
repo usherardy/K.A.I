@@ -18,6 +18,7 @@ compatibility_date = "2026-10-01"
 [vars]
 OPENAI_MODEL = "gpt-5-mini"
 OPENAI_REASONING_EFFORT = "low"
+OPENAI_TRANSCRIBE_MODEL = "gpt-4o-mini-transcribe"
 KAI_TIMEZONE = "America/New_York"
 POSTHOG_HOST = "https://us.posthog.com"
 SENTRY_BASE_URL = "https://sentry.io"
