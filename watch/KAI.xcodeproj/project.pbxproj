@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22E45D2B1A0BDC9BF4E0A369 /* KaiIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */; };
+		28B682D893255A438A97C32C /* ConversationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */; };
+		3361DF9917BACDC281B3FC5F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BADE27FDC576CCDEEEC4EA /* ContentView.swift */; };
+		B88B5262EF41D74A6A756330 /* KaiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398FF48B1FA83C6D78171CB4 /* KaiClient.swift */; };
+		C0B46883BB12E555E0B68395 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BC5618B08EFF71F56D920D /* Speaker.swift */; };
+		EA3F92FAF2F7C3FFFB54FF05 /* KAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */; };
+		F9A3389306A53C96F932A6EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00174913B93BAB53CA88ECF0 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00174913B93BAB53CA88ECF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		26BADE27FDC576CCDEEEC4EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		398FF48B1FA83C6D78171CB4 /* KaiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaiClient.swift; sourceTree = "<group>"; };
+		420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationModel.swift; sourceTree = "<group>"; };
+		50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KAIApp.swift; sourceTree = "<group>"; };
+		8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaiIntents.swift; sourceTree = "<group>"; };
+		9C8A07BB1D7DF93A8A318A81 /* KAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFA87FBDEB53B7C92B289EBA /* KAI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KAI.xcconfig; sourceTree = "<group>"; };
+		F6BC5618B08EFF71F56D920D /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		75160AEE7C27BD07B3B6F971 = {
+			isa = PBXGroup;
+			children = (
+				C76D20605C23DC9183D00C1A /* Config */,
+				CC2971C47C11D089B39E8861 /* KAI */,
+				DD046B09D1A5E8411E19BE43 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C76D20605C23DC9183D00C1A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CFA87FBDEB53B7C92B289EBA /* KAI.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		CC2971C47C11D089B39E8861 /* KAI */ = {
+			isa = PBXGroup;
+			children = (
+				00174913B93BAB53CA88ECF0 /* Assets.xcassets */,
+				26BADE27FDC576CCDEEEC4EA /* ContentView.swift */,
+				420A5BDF1D6A7684AB2843E4 /* ConversationModel.swift */,
+				50DB02901D9C95B8A0D4B9AD /* KAIApp.swift */,
+				398FF48B1FA83C6D78171CB4 /* KaiClient.swift */,
+				8B1911F4200658B71AEEE4A6 /* KaiIntents.swift */,
+				F6BC5618B08EFF71F56D920D /* Speaker.swift */,
+			);
+			path = KAI;
+			sourceTree = "<group>";
+		};
+		DD046B09D1A5E8411E19BE43 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C8A07BB1D7DF93A8A318A81 /* KAI.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5BB2C04AAA706BAB3C35A985 /* KAI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CB420D54C278E2BD5B07719 /* Build configuration list for PBXNativeTarget "KAI" */;
+			buildPhases = (
+				43C1330ED67CF73C3A04BDA3 /* Sources */,
+				006D7142C3A0E176A59091AD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KAI;
+			packageProductDependencies = (
+			);
+			productName = KAI;
+			productReference = 9C8A07BB1D7DF93A8A318A81 /* KAI.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C8AB0EDB6D906F87375E5591 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					5BB2C04AAA706BAB3C35A985 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 48387468DB159DDEACA2A413 /* Build configuration list for PBXProject "KAI" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 75160AEE7C27BD07B3B6F971;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DD046B09D1A5E8411E19BE43 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5BB2C04AAA706BAB3C35A985 /* KAI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		006D7142C3A0E176A59091AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9A3389306A53C96F932A6EE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		43C1330ED67CF73C3A04BDA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3361DF9917BACDC281B3FC5F /* ContentView.swift in Sources */,
+				28B682D893255A438A97C32C /* ConversationModel.swift in Sources */,
+				EA3F92FAF2F7C3FFFB54FF05 /* KAIApp.swift in Sources */,
+				B88B5262EF41D74A6A756330 /* KaiClient.swift in Sources */,
+				22E45D2B1A0BDC9BF4E0A369 /* KaiIntents.swift in Sources */,
+				C0B46883BB12E555E0B68395 /* Speaker.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1FEE83A1CAE2C2F6AED51E4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFA87FBDEB53B7C92B289EBA /* KAI.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Support/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(KAI_BUNDLE_ID)";
+				PRODUCT_NAME = KAI;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		4F0F49E7DFCD55F18DE9585C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		7C55DC99E60323EEF0E9CA74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		D425F89983B665BDE4DB8DAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFA87FBDEB53B7C92B289EBA /* KAI.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Support/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(KAI_BUNDLE_ID)";
+				PRODUCT_NAME = KAI;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		48387468DB159DDEACA2A413 /* Build configuration list for PBXProject "KAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C55DC99E60323EEF0E9CA74 /* Debug */,
+				4F0F49E7DFCD55F18DE9585C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8CB420D54C278E2BD5B07719 /* Build configuration list for PBXNativeTarget "KAI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D425F89983B665BDE4DB8DAE /* Debug */,
+				1FEE83A1CAE2C2F6AED51E4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C8AB0EDB6D906F87375E5591 /* Project object */;
+}

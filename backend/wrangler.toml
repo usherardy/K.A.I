@@ -1,0 +1,25 @@
+# Cloudflare Workers deployment for the KAI backend.
+#
+# Non-secret settings live in [vars]. Set secrets with:
+#   npx wrangler secret put KAI_API_KEY
+#   npx wrangler secret put OPENAI_API_KEY
+#   npx wrangler secret put KAI_PROJECTS            # JSON, see .env.example
+#   npx wrangler secret put POSTHOG_PERSONAL_API_KEY
+#   npx wrangler secret put SENTRY_AUTH_TOKEN
+#   npx wrangler secret put GA4_SERVICE_ACCOUNT_JSON
+#   npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+#
+# For `npm run dev:worker`, put the same values in .dev.vars (same format as .env).
+
+name = "kai"
+main = "src/worker.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+OPENAI_MODEL = "gpt-5-mini"
+OPENAI_REASONING_EFFORT = "low"
+KAI_TIMEZONE = "America/New_York"
+POSTHOG_HOST = "https://us.posthog.com"
+SENTRY_BASE_URL = "https://sentry.io"
+# SENTRY_ORG = "your-org-slug"
+# SUPABASE_URL = "https://your-project.supabase.co"

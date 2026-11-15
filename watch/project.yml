@@ -1,0 +1,43 @@
+# XcodeGen spec for the Kai watch app. KAI.xcodeproj is generated from this file and
+# checked in, so you only need XcodeGen (brew install xcodegen) after editing it:
+#   cd watch && xcodegen
+name: KAI
+options:
+  deploymentTarget:
+    watchOS: "10.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  KAI:
+    type: application
+    platform: watchOS
+    sources:
+      - path: KAI
+    configFiles:
+      Debug: Config/KAI.xcconfig
+      Release: Config/KAI.xcconfig
+    settings:
+      base:
+        PRODUCT_NAME: KAI
+        PRODUCT_BUNDLE_IDENTIFIER: $(KAI_BUNDLE_ID)
+        INFOPLIST_FILE: Support/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "4"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_PREVIEWS: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+schemes:
+  KAI:
+    build:
+      targets:
+        KAI: all
+    run:
+      config: Debug
+    archive:
+      config: Release

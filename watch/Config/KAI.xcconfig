@@ -1,0 +1,12 @@
+// Build settings for the Kai watch app.
+// Put your real values in Config/Secrets.xcconfig (git-ignored); it overrides anything here.
+// Note: "//" starts a comment in xcconfig, so URLs are written as https:/$()/host.
+
+KAI_BUNDLE_ID = com.example.kai
+DEVELOPMENT_TEAM =
+
+// The simulator shares the Mac's network, so localhost reaches `npm run dev`.
+KAI_BASE_URL = http:/$()/localhost:8787
+KAI_API_KEY =
+
+#include? "Secrets.xcconfig"
